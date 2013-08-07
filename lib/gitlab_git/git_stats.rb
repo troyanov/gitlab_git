@@ -3,14 +3,14 @@ require_relative 'log_parser'
 module Gitlab
   module Git
     class GitStats
-      attr_accessor :repo, :ref
+      attr_accessor :repo, :ref, :branch
 
-      def initialize repo, ref
-        @repo, @ref = repo, ref
+      def initialize repo, ref, branch
+        @repo, @ref, @branch = repo, ref, branch
       end
 
       def log
-        args = ['--format=%aN%x0a%ad', '--date=short', '--shortstat', '--no-merges']
+        args = ['--format=%aN%x0a%ad', '--date=short', '--shortstat', '--no-merges', @branch]
         repo.git.run(nil, 'log', nil, {}, args)
       rescue Grit::Git::GitTimeout
         nil
